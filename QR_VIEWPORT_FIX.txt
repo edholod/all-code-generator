@@ -1,0 +1,1 @@
+QR designer mobile viewport fix: overrides library inline fixed-size wrapper, constrains SVG/canvas and parent containers, preserves export dimensions. CSS/static checks only; iPhone Telegram not tested.
