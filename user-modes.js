@@ -17,11 +17,9 @@ body[data-user-mode="pro"] .mode-switch{border-color:#d8ccff}
 `;document.head.append(css);
 const host=document.querySelector('.nav-tabs');if(!host)return;
 const switcher=document.createElement('div');switcher.className='mode-switch';switcher.innerHTML='<div><strong id="modeTitle">Простой режим</strong><small id="modeDesc">Только основные инструменты. Все функции бесплатны.</small></div><div class="mode-buttons" role="group" aria-label="Сложность интерфейса"><button type="button" data-mode="simple">Обычный</button><button type="button" data-mode="pro">Профессиональный</button></div>';
-host.before(switcher);
-const banner=document.createElement('button');banner.type='button';banner.className='mode-show-pro';banner.textContent='⚙️ Показать профессиональные инструменты';banner.addEventListener('click',()=>setMode('pro'));
-const create=document.getElementById('panel-create');if(create)create.append(banner);
+const advancedPanel=document.getElementById('panel-create');if(!advancedPanel)return;advancedPanel.prepend(switcher);
 function classify(){
- document.querySelectorAll('.tab-panel section').forEach(section=>{
+ document.querySelectorAll('#panel-create section').forEach(section=>{
   if(section.dataset.modeClassified)return;
   const h=section.querySelector('h2,h3');if(!h)return;
   const title=h.textContent.trim();
@@ -35,7 +33,7 @@ function classify(){
  });
 }
 let mode='simple';try{mode=localStorage.getItem(KEY)==='pro'?'pro':'simple'}catch{}
-function apply(){classify();document.body.dataset.userMode=mode;document.querySelectorAll('[data-mode-classified="advanced"]').forEach(s=>s.classList.toggle('mode-pro-hidden',mode!=='pro'));switcher.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));document.getElementById('modeTitle').textContent=mode==='pro'?'Профессиональный режим':'Простой режим';document.getElementById('modeDesc').textContent=mode==='pro'?'Все инструменты: массовая генерация, этикетки, печать и GS1.':'Основные функции без сложных настроек. Всё бесплатно.';banner.hidden=mode==='pro';}
+function apply(){classify();document.body.dataset.userMode=mode;document.querySelectorAll('[data-mode-classified="advanced"]').forEach(s=>s.classList.toggle('mode-pro-hidden',mode!=='pro'));switcher.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));document.getElementById('modeTitle').textContent=mode==='pro'?'Профессиональный режим':'Простой режим';document.getElementById('modeDesc').textContent=mode==='pro'?'Все инструменты: массовая генерация, этикетки, печать и GS1.':'Основные функции без сложных настроек. Всё бесплатно.';}
 function setMode(value){mode=value==='pro'?'pro':'simple';try{localStorage.setItem(KEY,mode)}catch{}apply()}
 switcher.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
 const observer=new MutationObserver(()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;apply()})});let pending=false;
