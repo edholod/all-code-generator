@@ -1,4 +1,4 @@
-const CACHE='code-generator-shell-v15-designer-export';const FILES=['./','./index.html','./enhancements.js','./pro-tools.js','./finish-tools.js','./advanced-tools.js','./user-modes.js','./simple-start.js','./iphone-save.js','./designer-save.js','./manifest.webmanifest'];
+const CACHE='all-code-generator-icons-v1';const FILES=['./','./index.html','./enhancements.js','./pro-tools.js','./finish-tools.js','./advanced-tools.js','./user-modes.js','./simple-start.js','./iphone-save.js','./designer-save.js','./manifest.webmanifest'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',e=>{if(e.request.method!=='GET'||new URL(e.request.url).origin!==self.location.origin)return;e.respondWith(fetch(e.request).then(r=>{if(r.ok){let copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy))}return r}).catch(async()=> (await caches.match(e.request)) || Response.error()))});
